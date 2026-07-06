@@ -1,7 +1,7 @@
 import axios from "axios";
 import Imagecard from "./components/Imagecard";
 import { useEffect, useState } from "react";
-import "./custom.css"
+import "./custom.css";
 
 function App() {
   const [picsurl, setpicsurl] = useState([]);
@@ -12,7 +12,7 @@ function App() {
     const URL = `https://picsum.photos/v2/list?page=${page}&limit=60`;
     async function fetchImages() {
       setloading(true);
-       setpicsurl([]);
+      setpicsurl([]);
       try {
         const response = await axios.get(URL);
         setpicsurl(response.data);
@@ -26,22 +26,19 @@ function App() {
     fetchImages();
   }, [page]);
 
-  function addindex(val=null) {
-    if(val!==null  ){
-  setpage(val);
-  return;
+  function addindex(val = null) {
+    if (val !== null) {
+      setpage(val);
+      return;
+    } else {
+      if (page === 20) return;
+      setpage((prev) => prev + 1);
     }
-
-else{
- if (page === 20) return;
-    setpage((prev) => prev + 1);
   }
-  
-}
 
   function removeindex() {
     if (page === 1) return;
-console.log(page);
+    console.log(page);
 
     setpage((prev) => prev - 1);
   }
@@ -80,6 +77,7 @@ console.log(page);
                 key={el.id}
                 download_url={el.download_url}
                 author={el.author}
+                url={el.url}
               />
             ))}
           </div>
@@ -88,18 +86,15 @@ console.log(page);
 
       <footer className="sticky bottom-0 bg-gray-900 py-5">
         <div className="mx-auto flex max-w-fit items-center justify-between px-6 gap-2 ">
-        
-          <nav >
+          <nav>
             <ul className="flex -space-x-px text-xl ">
-              <li >
+              <li>
                 <a
                   href="#"
                   type="button"
                   className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium rounded-s-base text-sm px-3 h-10 focus:outline-none anchor
                   "
-                onClick={()=>
-                    removeindex()
-                  }
+                  onClick={() => removeindex()}
                 >
                   Previous
                 </a>
@@ -107,11 +102,9 @@ console.log(page);
               <li>
                 <a
                   href="#"
-                   type="button"
+                  type="button"
                   className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor"
-                  onClick={()=>
-                    addindex(1)
-                  }
+                  onClick={() => addindex(1)}
                 >
                   1
                 </a>
@@ -121,9 +114,7 @@ console.log(page);
                   href="#"
                   type="button"
                   className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor "
-                   onClick={()=>
-                    addindex(2)
-                  }
+                  onClick={() => addindex(2)}
                 >
                   2
                 </a>
@@ -131,13 +122,10 @@ console.log(page);
               <li>
                 <a
                   href="#"
-                   type="button"
+                  type="button"
                   aria-current="page"
                   className="flex items-center justify-center text-fg-brand bg-neutral-tertiary-medium box-border border border-default-medium hover:text-fg-brand font-medium text-sm w-10 h-10 focus:outline-none anchor"
-                    onClick={()=>
-                    addindex(3)
-                  }
-
+                  onClick={() => addindex(3)}
                 >
                   3
                 </a>
@@ -145,11 +133,9 @@ console.log(page);
               <li>
                 <a
                   href="#"
-                   type="button"
+                  type="button"
                   className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor "
-                    onClick={()=>
-                    addindex(4)
-                  }
+                  onClick={() => addindex(4)}
                 >
                   4
                 </a>
@@ -157,11 +143,9 @@ console.log(page);
               <li>
                 <a
                   href="#"
-                   type="button"
+                  type="button"
                   className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor"
-                    onClick={()=>
-                    addindex(5)
-                  }
+                  onClick={() => addindex(5)}
                 >
                   5
                 </a>
@@ -169,18 +153,16 @@ console.log(page);
               <li>
                 <a
                   href="#"
-                   type="button"
+                  type="button"
                   className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium rounded-e-base text-sm px-3 h-10 focus:outline-none anchor"
-                 onClick={() => addindex()}
+                  onClick={() => addindex()}
                 >
                   Next
                 </a>
               </li>
             </ul>
           </nav>
-          <p className="text-white text-xl font-semibold">
-    Page {page} / 20
-</p>
+          <p className="text-white text-xl font-semibold">Page {page} / 20</p>
         </div>
       </footer>
     </div>
