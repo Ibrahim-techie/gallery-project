@@ -6,7 +6,8 @@ import Pagination from "../components/Pagination";
 import SkeletonCard from "../components/SkeletonCard";
 import ErrorMessage from "../components/ErrorMessage";
 
-const TOTAL_PAGES = 20;
+// picsum has ~990 photos, so with 60 per page the list runs out after page 17
+const TOTAL_PAGES = 17;
 const PER_PAGE = 60;
 
 // keep the page inside 1..TOTAL_PAGES even if someone types ?page=abc
@@ -59,6 +60,10 @@ export default function Gallery() {
   if (error) {
     content = (
       <ErrorMessage message={error} onRetry={() => setRetryCount((c) => c + 1)} />
+    );
+  } else if (!loading && photos.length === 0) {
+    content = (
+      <p className="py-20 text-center text-gray-400">No photos on this page.</p>
     );
   } else {
     content = (
