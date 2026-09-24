@@ -1,5 +1,0 @@
-@import "tailwindcss";
-
-.anchor{
- @apply  bg-amber-400 px-6 py-2 font-semibold transition hover:bg-amber-500 disabled:opacity-40;
-}

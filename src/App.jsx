@@ -1,50 +1,41 @@
 import axios from "axios";
 import Imagecard from "./components/Imagecard";
+import Pagination from "./components/Pagination";
 import { useEffect, useState } from "react";
-import "./custom.css";
+
+const TOTAL_PAGES = 20;
+const PER_PAGE = 60;
 
 function App() {
-  const [picsurl, setpicsurl] = useState([]);
-  const [page, setpage] = useState(1);
-  const [loading, setloading] = useState(false);
+  const [photos, setPhotos] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const URL = `https://picsum.photos/v2/list?page=${page}&limit=60`;
+    const URL = `https://picsum.photos/v2/list?page=${page}&limit=${PER_PAGE}`;
     async function fetchImages() {
-      setloading(true);
-      setpicsurl([]);
+      setLoading(true);
       try {
         const response = await axios.get(URL);
-        setpicsurl(response.data);
+        setPhotos(response.data);
       } catch (error) {
         console.error(error);
       } finally {
-        setloading(false);
+        setLoading(false);
       }
     }
 
     fetchImages();
   }, [page]);
 
-  function addindex(val = null) {
-    if (val !== null) {
-      setpage(val);
-      return;
-    } else {
-      if (page === 20) return;
-      setpage((prev) => prev + 1);
-    }
-  }
-
-  function removeindex() {
-    if (page === 1) return;
-    console.log(page);
-
-    setpage((prev) => prev - 1);
+  function goToPage(num) {
+    if (num < 1 || num > TOTAL_PAGES) return;
+    setPage(num);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (
-    <div className="bg-gray-800 h-screen w-full overflow-auto ">
+    <div className="min-h-screen w-full bg-gray-800">
       <h1 className="py-6 text-center text-4xl font-bold text-white">
         📸 Image Gallery
       </h1>
@@ -71,8 +62,8 @@ function App() {
             </div>
           </div>
         ) : (
-         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {picsurl.map((el) => (
+          <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {photos.map((el) => (
               <Imagecard
                 key={el.id}
                 download_url={el.download_url}
@@ -84,86 +75,12 @@ function App() {
         )}
       </div>
 
-      <footer className="sticky bottom-0 bg-gray-900 py-5">
-        <div className="mx-auto flex max-w-fit items-center justify-between px-6 gap-2 ">
-          <nav>
-            <ul className="flex -space-x-px text-xl ">
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium rounded-s-base text-sm px-3 h-10 focus:outline-none anchor
-                  "
-                  onClick={() => removeindex()}
-                >
-                  Previous
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor"
-                  onClick={() => addindex(1)}
-                >
-                  1
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor "
-                  onClick={() => addindex(2)}
-                >
-                  2
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  aria-current="page"
-                  className="flex items-center justify-center text-fg-brand bg-neutral-tertiary-medium box-border border border-default-medium hover:text-fg-brand font-medium text-sm w-10 h-10 focus:outline-none anchor"
-                  onClick={() => addindex(3)}
-                >
-                  3
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor "
-                  onClick={() => addindex(4)}
-                >
-                  4
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium text-sm w-10 h-10 focus:outline-none anchor"
-                  onClick={() => addindex(5)}
-                >
-                  5
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  type="button"
-                  className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium rounded-e-base text-sm px-3 h-10 focus:outline-none anchor"
-                  onClick={() => addindex()}
-                >
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <p className="text-white text-xl font-semibold">Page {page} / 20</p>
-        </div>
+      <footer className="sticky bottom-0 flex justify-center bg-gray-900 py-5">
+        <Pagination
+          page={page}
+          totalPages={TOTAL_PAGES}
+          onPageChange={goToPage}
+        />
       </footer>
     </div>
   );
