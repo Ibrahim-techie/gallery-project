@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router";
+import FavoriteButton from "./FavoriteButton";
 
 // download_url is the original photo (often 5000px+ wide). For the grid we
 // ask picsum for a resized version instead, which is much lighter.
@@ -9,7 +10,9 @@ function thumbnailUrl(id) {
 
 function Imagecard({ id, author = "Unknown" }) {
   return (
-    <div className="group w-full overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <div className="group relative w-full overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+      <FavoriteButton photo={{ id, author }} className="absolute top-3 right-3 z-10" />
+
       <Link to={`/photo/${id}`} className="block overflow-hidden bg-gray-200">
         <img
           src={thumbnailUrl(id)}

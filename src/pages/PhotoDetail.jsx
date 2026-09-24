@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router";
 import ErrorMessage from "../components/ErrorMessage";
+import FavoriteButton from "../components/FavoriteButton";
 
 const DISPLAY_WIDTH = 1200;
 
@@ -98,7 +99,8 @@ export default function PhotoDetail() {
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
+          <FavoriteButton photo={photo} />
           <a
             href={photo.url}
             target="_blank"
