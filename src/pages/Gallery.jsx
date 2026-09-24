@@ -76,7 +76,7 @@ export default function Gallery() {
     <>
       {content}
 
-      <footer className="sticky bottom-0 flex justify-center bg-gray-900 py-5">
+      <footer className="sticky bottom-0 z-20 flex justify-center bg-gray-900 px-2 py-5">
         <Pagination
           page={page}
           totalPages={TOTAL_PAGES}

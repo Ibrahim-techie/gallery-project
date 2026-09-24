@@ -14,7 +14,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
   const pages = getPageNumbers(page, totalPages);
 
   const baseBtn =
-    "h-10 min-w-10 px-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-40";
+    "h-10 min-w-9 px-2 text-sm font-semibold sm:min-w-10 sm:px-3 transition disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <nav aria-label="Gallery pages" className="flex items-center gap-4">
