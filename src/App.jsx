@@ -58,7 +58,7 @@ function App() {
           : photos.map((el) => (
               <Imagecard
                 key={el.id}
-                download_url={el.download_url}
+                id={el.id}
                 author={el.author}
                 url={el.url}
               />

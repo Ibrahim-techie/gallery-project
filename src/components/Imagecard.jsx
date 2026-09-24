@@ -1,14 +1,22 @@
-export default function Imagecard({
-  download_url = "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  author = "Unknown",
-  url = "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-}) {
+import { memo } from "react";
+
+// download_url is the original photo (often 5000px+ wide). For the grid we
+// ask picsum for a resized version instead, which is much lighter.
+function thumbnailUrl(id) {
+  return `https://picsum.photos/id/${id}/600/400`;
+}
+
+function Imagecard({ id, author = "Unknown", url }) {
   return (
     <div className="group w-full overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-      <div className="overflow-hidden">
+      <div className="overflow-hidden bg-gray-200">
         <img
-          src={download_url}
-          alt={author}
+          src={thumbnailUrl(id)}
+          alt={`Photo by ${author}`}
+          width={600}
+          height={400}
+          loading="lazy"
+          decoding="async"
           className="h-60 w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
       </div>
@@ -33,3 +41,5 @@ export default function Imagecard({
     </div>
   );
 }
+
+export default memo(Imagecard);
