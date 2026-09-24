@@ -1,16 +1,67 @@
-# React + Vite
+# 📸 Image Gallery
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A photo gallery built with React that pulls photos from the [Lorem Picsum](https://picsum.photos/) API. You can page through almost 1,000 photos, open any photo for a closer look, and save your favorites.
 
-Currently, two official plugins are available:
+**Live demo:** _add your link here after deploying_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Gallery page](screenshots/gallery.png)
+![Photo detail page](screenshots/detail.png)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Pagination.** A reusable `Pagination` component shows a sliding window of page numbers. The current page is kept in the URL (`/?page=4`), so refresh and the browser Back button work as expected.
+- **Photo detail page.** `/photo/:id` shows a larger version of the photo, the photographer, the original size, and links to Unsplash and the full-size file.
+- **Favorites.** Heart any photo to save it. Favorites are shared across the app with the **Context API** and saved in `localStorage`.
+- **Loading and error states.** Skeleton cards appear while photos load. If a request fails you get an error screen with a "Try again" button.
+- **Responsive.** The grid goes from 1 to 4 columns depending on screen size.
 
-## Expanding the ESLint configuration
+## Performance
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- The grid loads resized 600×400 thumbnails instead of the original photos, which are often 5000px wide.
+- Images use `loading="lazy"`, so off-screen photos aren't downloaded until you scroll to them.
+- `Imagecard` is wrapped in `React.memo`.
+- The detail, favorites and 404 pages are loaded with `React.lazy` and split into their own chunks.
+- An `AbortController` cancels the old request when you switch pages quickly, so a slow response can't overwrite a newer one.
+
+## Tech stack
+
+- React 19 (hooks, Context API, `memo`, `lazy`/`Suspense`)
+- React Router 7
+- Axios
+- Tailwind CSS 4
+- Vite
+
+## Project structure
+
+```
+src/
+├── components/     Imagecard, Pagination, FavoriteButton, SkeletonCard, ErrorMessage
+├── context/        FavoritesProvider and the useFavorites hook
+├── pages/          Gallery, PhotoDetail, Favorites, NotFound
+├── App.jsx         header + routes
+└── main.jsx
+```
+
+## Running locally
+
+```bash
+git clone https://github.com/Ibrahim-techie/gallery-project.git
+cd gallery-project
+npm install
+npm run dev
+```
+
+Then open http://localhost:5173.
+
+## Deploying
+
+`npm run build` creates a static site in `dist/`. Because this is a single-page app, the host has to send every URL to `index.html`. Both common hosts are already set up for that:
+
+- **Netlify:** `public/_redirects`
+- **Vercel:** `vercel.json`
+
+## What I'd add next
+
+- Search or filter by photographer
+- Infinite scroll as an alternative to pagination
+- Unit tests with Vitest and React Testing Library
