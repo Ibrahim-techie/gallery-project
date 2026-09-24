@@ -15,6 +15,7 @@ export default function PhotoDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const controller = new AbortController();
 
     async function fetchPhoto() {
